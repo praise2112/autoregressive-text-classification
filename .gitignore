@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+
+# Model checkpoints (keep only final models)
+runs/*/checkpoint-*/
+*.safetensors
+*.bin
+!runs/*/final_model/
+
+# Weights & Biases
+wandb/
+
+# Environment
+.env
