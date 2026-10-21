@@ -4,9 +4,16 @@ A research implementation exploring whether autoregressive supervised fine-tunin
 
 ## Key Results
 
-- **F1 Score**: 0.8863 (98.6% of DeBERTa baseline: 0.8989)
-- **Model**: google/gemma-3-270m-it with full fine-tuning
-- **Approach**: Generative text classification using chat templates
+Weighted F1 on the test split of [dair-ai/emotion](https://huggingface.co/datasets/dair-ai/emotion) (6 labels).
+
+| Model | How it classifies | F1 |
+|---|---|---|
+| DeBERTa (baseline) | encoder with a classification head | 0.8989 |
+| Gemma 3 270M | classification head on the same model | 0.8972 |
+| **Gemma 3 270M, full fine-tuning** | **generates the label** | **0.8863** |
+| Gemma 3 270M, LoRA (r=32) | generates the label | 0.8774 |
+
+Generating the label with `google/gemma-3-270m-it` reaches 98.6% of the DeBERTa baseline's F1. Full fine-tuning beat LoRA on this task.
 
 ## Quick Start
 
@@ -57,4 +64,9 @@ This implementation uses:
 - Completion-only loss for efficient training
 - Full fine-tuning outperforms PEFT for this classification task
 
-For detailed progress and analysis, see `CLAUDE.md` and `PROGRESS.md`.
+## Limitations
+
+- One dataset and one seed per configuration, so small F1 differences are within noise.
+- Decoding a label costs more than one forward pass through an encoder with a classification head.
+
+Run notes are in `PROGRESS.md`.
